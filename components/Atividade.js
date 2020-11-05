@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
-const Materia = (props) => {
+const Tarefa = (props) => {
   return (
     <View style={styles.itemBox}>
-      <TouchableOpacity
-        onPress={() => {
-          props.onSelect(props.id);
-        }}
-      >
-        <Text style={styles.itemText}>{props.nome}</Text>
+      <TouchableOpacity>
+        <Text style={styles.itemText}>
+          {props.atividade.nome} valor: {props.atividade.valor}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -23,4 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Materia;
+export default Tarefa;

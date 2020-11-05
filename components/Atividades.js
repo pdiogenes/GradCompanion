@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
-import Materia from "./Materia";
+import { FlatList, StyleSheet, View } from "react-native";
+import Atividade from "./Atividade";
 
-const Materias = (props) => {
+const Atividades = (props) => {
   return (
     <FlatList
-      data={props.listaMaterias}
-      renderItem={({ item }) => (
-        <Materia onSelect={props.onSelect} id={item.id} nome={item.nome} />
-      )}
+      data={props.atividades}
+      renderItem={({ item }) => <Atividade atividade={item} />}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={() => <View style={styles.sep} />}
     />
@@ -25,4 +23,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Materias;
+export default Atividades;

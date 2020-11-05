@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  Text,
-  TextInput,
-  View,
   KeyboardAvoidingView,
   Platform,
-  TouchableOpacity,
-  Keyboard,
+  Text,
+  View,
   Alert,
 } from "react-native";
-import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
-import Materias from "./components/Materias";
+
+import Constants from "expo-constants";
+
+import MainMaterias from "./components/MainMaterias";
 import Menu from "./components/Menu";
 import Navbar from "./components/Navbar";
+import MateriaPage from "./components/MateriaPage";
 
 export default function App() {
   const [materias, setMaterias] = useState([
@@ -23,15 +23,45 @@ export default function App() {
     { id: "t3", nome: "Matéria 3" },
   ]);
 
-  const [field, setField] = useState("");
-  let _input;
-  const adicionarMateria = (m) => {
-    if (m.length > 0) {
-      const nova = { id: Date.now().toString(), nome: m };
-      setMaterias([...materias, nova]);
-      setField("");
-      _input.blur();
-    } else Alert.alert("Você deve digitar o nome da matéria.");
+  const [atividades, setAtividades] = useState([
+    { id: "at1", nome: "Atividade da Matéria 1", idMateria: "t1", valor: "10" },
+    { id: "at2", nome: "Atividade da Matéria 2", idMateria: "t2", valor: "10" },
+    { id: "at3", nome: "Atividade da Matéria 3", idMateria: "t3", valor: "10" },
+    {
+      id: "at4",
+      nome: "Atividade 2 da Matéria 3",
+      idMateria: "t3",
+      valor: "15",
+    },
+  ]);
+
+  const [tela, setTela] = useState("materias");
+  const [materiaAtual, setMateriaAtual] = useState("");
+
+  const selectMateria = (idMateria) => {
+    let idm = materias.findIndex((materia) => materia.id == idMateria);
+    setMateriaAtual(idm);
+    setTela("atvMaterias");
+  };
+
+  const retorna = () => {
+    setMateriaAtual("");
+    setTela("materias");
+  };
+
+  const switchTela = () => {
+    switch (tela) {
+      case "materias":
+        return <MainMaterias materias={materias} onSelect={selectMateria} />;
+      case "atvMaterias":
+        return (
+          <MateriaPage
+            materia={materias[materiaAtual]}
+            atividades={atividades}
+            onRetorno={retorna}
+          />
+        );
+    }
   };
 
   return (
@@ -43,63 +73,23 @@ export default function App() {
       <View style={styles.container}>
         <Navbar estado={`${materias.length}`} />
         <Menu />
-        <Materias listaMaterias={materias} />
-        <View style={styles.fieldBox}>
-          <TextInput
-            style={styles.field}
-            placeholder="Nova Matéria"
-            defaultValue={field}
-            onChangeText={(field) => setField(field)}
-            onSubmitEditing={() => adicionarMateria(field)}
-            onBlur={Keyboard.dismiss}
-            ref={(r) => {
-              _input = r;
-            }}
-          />
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => adicionarMateria(field)}
-          >
-            <Text>Adicionar</Text>
-          </TouchableOpacity>
-        </View>
+        {switchTela()}
       </View>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  app: {
-    flexDirection: "column",
-    flex: 1,
-    backgroundColor: "#303841",
-  },
   container: {
     flexDirection: "column",
     flex: 1,
     marginTop: Constants.statusBarHeight,
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
     backgroundColor: "#eeeeee",
   },
-  fieldBox: {
-    margin: 15,
-    height: 50,
-    flexDirection: "row",
-  },
-  field: {
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    fontSize: 20,
-    flex: 1,
-  },
-  btn: {
+  app: {
     flexDirection: "column",
-    justifyContent: "center",
-    marginLeft: 10,
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: "#bbbfca",
+    flex: 1,
+    backgroundColor: "#303841",
   },
 });
