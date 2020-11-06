@@ -12,14 +12,6 @@ import Materias from "./Materias";
 const Main = (props) => {
   const [field, setField] = useState("");
   let _input;
-  const adicionarMateria = (m) => {
-    if (m.length > 0) {
-      const nova = { id: Date.now().toString(), nome: m };
-      setMaterias([...props.materias, nova]);
-      setField("");
-      _input.blur();
-    } else Alert.alert("Você deve digitar o nome da matéria.");
-  };
 
   return (
     <React.Fragment>
@@ -30,7 +22,11 @@ const Main = (props) => {
           placeholder="Nova Matéria"
           defaultValue={field}
           onChangeText={(field) => setField(field)}
-          onSubmitEditing={() => adicionarMateria(field)}
+          onSubmitEditing={() => {
+            props.onAddMateria(field);
+            setField("");
+            _input.blur();
+          }}
           onBlur={Keyboard.dismiss}
           ref={(r) => {
             _input = r;
@@ -38,7 +34,11 @@ const Main = (props) => {
         />
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => adicionarMateria(field)}
+          onPress={() => {
+            props.onAddMateria(field);
+            setField("");
+            _input.blur();
+          }}
         >
           <Text>Adicionar</Text>
         </TouchableOpacity>

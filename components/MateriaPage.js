@@ -3,13 +3,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Atividades from "./Atividades";
 
 const MateriaPage = (props) => {
-  const selectAtvs = () => {
-    return props.atividades.filter(
-      (atividade) => atividade.idMateria == props.materia.id
-    );
-  };
-
-  const ativs = selectAtvs();
+  const ativs = props.atividades.filter(
+    (atividade) => atividade.idMateria == props.materia.id
+  );
 
   return (
     <React.Fragment>
@@ -20,8 +16,11 @@ const MateriaPage = (props) => {
 
         <Text style={styles.headerNome}>{props.materia.nome}</Text>
 
-        <TouchableOpacity style={styles.btn}>
-          <Text>Botão 2</Text>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => props.onClickAdd("addAtiv")}
+        >
+          <Text> + </Text>
         </TouchableOpacity>
       </View>
 

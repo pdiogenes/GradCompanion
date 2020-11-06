@@ -15,6 +15,7 @@ import MainMaterias from "./components/MainMaterias";
 import Menu from "./components/Menu";
 import Navbar from "./components/Navbar";
 import MateriaPage from "./components/MateriaPage";
+import NewAtividade from "./components/NewAtividade";
 
 export default function App() {
   const [materias, setMaterias] = useState([
@@ -49,15 +50,41 @@ export default function App() {
     setTela("materias");
   };
 
+  const adicionarMateria = (m) => {
+    if (m.length > 0) {
+      const nova = { id: Date.now().toString(), nome: m };
+      setMaterias([...materias, nova]);
+    } else Alert.alert("Você deve digitar o nome da matéria.");
+  };
+
+  const adicionarAtividade = (a) => {
+    // adicionar checagem de campos
+    setAtividades([...atividades, a]);
+  };
+
   const switchTela = () => {
     switch (tela) {
       case "materias":
-        return <MainMaterias materias={materias} onSelect={selectMateria} />;
+        return (
+          <MainMaterias
+            materias={materias}
+            onSelect={selectMateria}
+            onAddMateria={adicionarMateria}
+          />
+        );
       case "atvMaterias":
         return (
           <MateriaPage
             materia={materias[materiaAtual]}
             atividades={atividades}
+            onRetorno={retorna}
+            onClickAdd={setTela}
+          />
+        );
+      case "addAtiv":
+        return (
+          <NewAtividade
+            onAddAtividade={adicionarAtividade}
             onRetorno={retorna}
           />
         );
