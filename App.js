@@ -15,6 +15,7 @@ import MainMaterias from "./components/MainMaterias";
 import Menu from "./components/Menu";
 import Navbar from "./components/Navbar";
 import MateriaPage from "./components/MateriaPage";
+import AtividadePage from "./components/AtividadePage";
 import NewAtividade from "./components/NewAtividade";
 
 export default function App() {
@@ -25,24 +26,51 @@ export default function App() {
   ]);
 
   const [atividades, setAtividades] = useState([
-    { id: "at1", nome: "Atividade da Matéria 1", idMateria: "t1", valor: "10" },
-    { id: "at2", nome: "Atividade da Matéria 2", idMateria: "t2", valor: "10" },
-    { id: "at3", nome: "Atividade da Matéria 3", idMateria: "t3", valor: "10" },
+    {
+      id: "at1",
+      nome: "Atividade da Matéria 1",
+      idMateria: "t1",
+      valor: "10",
+      desc: "Descricao da Atividade kkkkkkkkk :D LOL!! XD :)",
+    },
+    {
+      id: "at2",
+      nome: "Atividade da Matéria 2",
+      idMateria: "t2",
+      valor: "10",
+      desc: "Descricao da Atividade kkkkkkkkk :D LOL!! XD :)",
+    },
+    {
+      id: "at3",
+      nome: "Atividade da Matéria 3",
+      idMateria: "t3",
+      valor: "10",
+      desc: "Descricao da Atividade kkkkkkkkk :D LOL!! XD :)",
+    },
     {
       id: "at4",
       nome: "Atividade 2 da Matéria 3",
       idMateria: "t3",
       valor: "15",
+      desc: "Descricao da Atividade kkkkkkkkk :D LOL!! XD :)",
     },
   ]);
 
   const [tela, setTela] = useState("materias");
   const [materiaAtual, setMateriaAtual] = useState("");
+  const [atividadeAtual, setAtividadeAtual] = useState("");
 
   const selectMateria = (idMateria) => {
     let idm = materias.findIndex((materia) => materia.id == idMateria);
     setMateriaAtual(idm);
     setTela("atvMaterias");
+  };
+
+  const selectAtividade = (idAtividade) => {
+    // alert(JSON.stringify(idAtividade));
+    let ida = atividades.findIndex((atividade) => atividade.id == idAtividade);
+    setAtividadeAtual(ida);
+    setTela("atvDetails");
   };
 
   const retorna = () => {
@@ -62,6 +90,13 @@ export default function App() {
     setAtividades([...atividades, a]);
   };
 
+  const atualizaAtividade = (a) => {
+    let lista = [...atividades];
+    lista[atividadeAtual] = a;
+    setAtividades(lista);
+    setTela("atvMaterias");
+  };
+
   const switchTela = () => {
     switch (tela) {
       case "materias":
@@ -77,15 +112,26 @@ export default function App() {
           <MateriaPage
             materia={materias[materiaAtual]}
             atividades={atividades}
+            onSelectAtividade={selectAtividade}
             onRetorno={retorna}
-            onClickAdd={setTela}
+            onChangePage={setTela}
           />
         );
       case "addAtiv":
         return (
           <NewAtividade
             onAddAtividade={adicionarAtividade}
-            onRetorno={retorna}
+            onRetorno={selectMateria}
+            idMateria={materias[materiaAtual].id}
+          />
+        );
+      case "atvDetails":
+        return (
+          <AtividadePage
+            onChangePage={setTela}
+            onRetorno={atualizaAtividade}
+            idMateria={materias[materiaAtual].id}
+            atividade={atividades[atividadeAtual]}
           />
         );
     }
@@ -98,7 +144,7 @@ export default function App() {
     >
       <StatusBar style="light" />
       <View style={styles.container}>
-        <Navbar estado={`${materias.length}`} />
+        <Navbar estado={`${atividades.length}`} />
         <Menu />
         {switchTela()}
       </View>

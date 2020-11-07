@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "black", //????
+    color: "#000000",
     textAlign: "center",
   },
 });

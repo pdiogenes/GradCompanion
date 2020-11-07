@@ -3,10 +3,13 @@ import { FlatList, StyleSheet, View } from "react-native";
 import Atividade from "./Atividade";
 
 const Atividades = (props) => {
+  // console.log(`[DEBUG]: Atividades -> props.atividades`, props.atividades);
   return (
     <FlatList
       data={props.atividades}
-      renderItem={({ item }) => <Atividade atividade={item} />}
+      renderItem={({ item }) => (
+        <Atividade atividade={item} onChangePage={props.onSelectAtividade} />
+      )}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={() => <View style={styles.sep} />}
     />
