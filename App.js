@@ -17,6 +17,7 @@ import Navbar from "./components/Navbar";
 import MateriaPage from "./components/MateriaPage";
 import AtividadePage from "./components/AtividadePage";
 import NewAtividade from "./components/NewAtividade";
+import MainAtividades from './components/MainAtividades';
 
 export default function App() {
   const [materias, setMaterias] = useState([
@@ -134,6 +135,15 @@ export default function App() {
             atividade={atividades[atividadeAtual]}
           />
         );
+      case "atividades":
+        return (
+          <MainAtividades
+          atividades={atividades}
+          materias={materias}
+          onRetorno={retorna}
+          onChangePage={setTela}
+          />
+        )
     }
   };
 
@@ -145,7 +155,7 @@ export default function App() {
       <StatusBar style="light" />
       <View style={styles.container}>
         <Navbar estado={`${atividades.length}`} />
-        <Menu />
+        <Menu switchTela={setTela}/>
         {switchTela()}
       </View>
     </KeyboardAvoidingView>

@@ -59,10 +59,7 @@ const MateriaPage = (props) => {
 
         <Switch
           onChange={() => {
-            // SET ROLE PRO OUTRO ROLE
-            // alert("rs");
-            setOrdenacao(!!!!!!!!!!!!!ordenacao);
-            // alert(ordenacao);
+            setOrdenacao(!ordenacao);
             ordernarAtividades();
           }}
           value={ordenacao}
