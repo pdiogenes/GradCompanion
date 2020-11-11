@@ -9,15 +9,20 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 
+import DatePicker from "react-native-datepicker";
+
 const AtividadePage = (props) => {
   // alert(JSON.stringify(props));
+  console.log("props -> AtividadePage", props);
   const [nome, setNome] = useState(props.atividade.nome);
-  const [descricao, setDesc] = useState(props.atividade.descp); // DESCULPA !!
+  const [descricao, setDesc] = useState(props.atividade.desc); // DESCULPA !!
   const [valor, setValor] = useState(props.atividade.valor);
+  const [data, setData] = useState(new Date(props.atividade.data));
 
   const [editNome, setEditNome] = useState(false);
   const [editDesc, setEditDesc] = useState(false); // DESCULPA !!
   const [editValor, setEditValor] = useState(false);
+  const [editData, setEditData] = useState(false);
 
   const editarNome = (n) => {
     // alert(n);
@@ -34,6 +39,45 @@ const AtividadePage = (props) => {
   const editarValor = (valor) => {
     setEditValor(false);
     setValor(valor);
+  };
+
+  const editarData = (data) => {
+    setEditData(false);
+    setData(data);
+  };
+
+  const dadosSaoValidos = () => {
+    if (nome.length <= 0) {
+      Alert.alert("Atividade precisa de nome!");
+      return false;
+    }
+    if (descricao.length <= 0) {
+      Alert.alert("Atividade precisa de descrição!");
+      return false;
+    }
+    if (new Date(data).getTime() <= Date.now()) {
+      Alert.alert("Data está errada!");
+      return false;
+    }
+    if (valor.length <= 0) {
+      Alert.alert("Atividade precisa de valor!");
+      return false;
+    }
+    return true;
+  };
+
+  const tentarSalvar = () => {
+    if (dadosSaoValidos()) {
+      // voltar passando o obj atualizado
+      const a = {
+        ...props.atividade,
+        valor,
+        nome,
+        desc: descricao,
+        data: data,
+      };
+      props.onRetorno(a);
+    }
   };
 
   return (
@@ -82,9 +126,28 @@ const AtividadePage = (props) => {
           </TouchableOpacity>
         </View>
       )}
-      <View style={styles.fieldBox}>
-        <TextInput style={styles.field} placeholder={"Data de entrega"} />
-      </View>
+      {editData ? (
+        <View style={[styles.fieldBox, styles.dateBox]}>
+          <Text>Data de entrega: </Text>
+          <DatePicker
+            style={styles.datePicker}
+            date={data}
+            onDateChange={setData}
+          />
+        </View>
+      ) : (
+        <View style={styles.fieldBox}>
+          <Text style={styles.field}>
+            {data.getDate()}/{data.getMonth() + 1}/{data.getFullYear()}
+          </Text>
+          <TouchableOpacity
+            style={styles.btnEditar}
+            onPress={() => setEditData(true)}
+          >
+            <Text>Editar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       {editValor ? (
         <View style={styles.fieldBox}>
           <TextInput
@@ -92,6 +155,8 @@ const AtividadePage = (props) => {
             style={styles.field}
             defaultValue={valor}
             onChangeText={(v) => setValor(v)}
+            keyboardType={"number-pad"}
+            maxLength={3}
             onBlur={() => editarValor(valor)}
             onSubmitEditing={() => editarValor(valor)}
           />
@@ -111,14 +176,7 @@ const AtividadePage = (props) => {
         <TouchableOpacity
           style={[styles.btnCancelar, styles.btn]}
           onPress={() => {
-            // voltar passando o obj atualizado
-            const a = {
-              ...props.atividade,
-              valor,
-              nome,
-              descp: descricao,
-            };
-            props.onRetorno(a);
+            tentarSalvar();
           }}
         >
           <Text>Voltar</Text>
@@ -167,6 +225,15 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 20,
     flex: 1,
+  },
+  datePicker: {
+    flex: 1,
+  },
+  dateBox: {
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
   },
 });
 

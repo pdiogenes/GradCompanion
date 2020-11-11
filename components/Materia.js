@@ -7,6 +7,9 @@ const Materia = (props) => {
         onPress={() => {
           props.onSelect(props.id);
         }}
+        onLongPress={() => {
+          props.onDelete(props.id);
+        }}
       >
         <Text style={styles.itemText}>{props.nome}</Text>
       </TouchableOpacity>

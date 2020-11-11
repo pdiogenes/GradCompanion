@@ -5,15 +5,62 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Alert,
 } from "react-native";
+
+import DatePicker from "react-native-datepicker";
 
 const NewAtividade = (props) => {
   const [nome, setNome] = useState("");
-  const [descp, setDescp] = useState(""); // DESCULPA !!
+  const [desc, setDescp] = useState(""); // DESCULPA !!
   const [valor, setValor] = useState("");
 
+  const criarDataInicialPoggers = () => {
+    let d = new Date();
+    d.setDate(d.getDate() > 0 ? d.getDate() - 1 : d.getDate());
+    return d;
+  };
+  const [data, setData] = useState(criarDataInicialPoggers());
+
+  const dadosSaoValidos = () => {
+    if (nome.length <= 0) {
+      Alert.alert("Atividade precisa de nome!");
+      return false;
+    }
+    if (desc.length <= 0) {
+      Alert.alert("Atividade precisa de descrição!");
+      return false;
+    }
+    if (new Date(data).getTime() <= Date.now()) {
+      Alert.alert("Data está errada!");
+      return false;
+    }
+    if (valor.length <= 0) {
+      Alert.alert("Atividade precisa de valor!");
+      return false;
+    }
+    return true;
+  };
+
+  const tentarSalvar = () => {
+    if (dadosSaoValidos()) {
+      let a = {
+        id: Date.now().toString(),
+        nome: nome,
+        valor: valor,
+        data: new Date(data),
+        desc: desc,
+        idMateria: props.idMateria,
+      };
+      console.log(a);
+      props.onAddAtividade(a);
+      props.onRetorno(props.idMateria);
+    }
+  };
+
   return (
-    <View>
+    <KeyboardAvoidingView>
       <Text style={styles.textHeader}>Adicionar Atividade</Text>
       <View style={styles.fieldBox}>
         <TextInput
@@ -27,18 +74,26 @@ const NewAtividade = (props) => {
         <TextInput
           placeholder={"Descrição da atividade"}
           style={styles.field}
-          value={descp}
+          value={desc}
           onChangeText={(descp) => setDescp(descp)}
         />
       </View>
-      <View style={styles.fieldBox}>
-        <TextInput style={styles.field} placeholder={"Data de entrega"} />
+      <View style={[styles.fieldBox, styles.dateBox]}>
+        <Text>Data de entrega: </Text>
+        <DatePicker
+          style={styles.datePicker}
+          date={data}
+          onDateChange={setData}
+        />
       </View>
+
       <View style={styles.fieldBox}>
         <TextInput
           style={styles.field}
           value={valor}
           onChangeText={(valor) => setValor(valor)}
+          keyboardType={"number-pad"}
+          maxLength={3}
           placeholder={"Valor da atividade"}
         />
       </View>
@@ -54,21 +109,16 @@ const NewAtividade = (props) => {
         <TouchableOpacity
           style={[styles.btnAdicionar, styles.btn]}
           onPress={() => {
-            let a = {
-              id: Date.now().toString(),
-              nome: nome,
-              valor: valor,
-              descp,
-              idMateria: props.idMateria,
-            };
-            props.onAddAtividade(a);
-            props.onRetorno(props.idMateria);
+            tentarSalvar();
           }}
+          // disabled={() => {
+          //   return touched;
+          // }}
         >
           <Text>Adicionar Atividade</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -110,6 +160,15 @@ const styles = StyleSheet.create({
   btnAdicionar: {
     flex: 1,
     backgroundColor: "#5cb85c",
+  },
+  datePicker: {
+    flex: 1,
+  },
+  dateBox: {
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
   },
 });
 

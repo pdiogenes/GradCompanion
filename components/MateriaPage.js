@@ -7,6 +7,12 @@ const MateriaPage = (props) => {
     (atividade) => atividade.idMateria == props.materia.id
   );
 
+  ativs.sort((a, b) => {
+    let c = new Date(a.data);
+    let d = new Date(b.data);
+    return c - d;
+  });
+
   const [ordenacao, setOrdenacao] = useState(false);
 
   const [vetor, setVetor] = useState(ativs);
@@ -15,11 +21,9 @@ const MateriaPage = (props) => {
     let ordered;
     if (ordenacao) {
       ordered = vetor.sort((a, b) => {
-        // let c = new Date(a.data);
-        // let d = new Date(b.data);
-        let c = a.nome;
-        let d = b.nome;
-        return c > d;
+        let c = new Date(a.data);
+        let d = new Date(b.data);
+        return c - d;
       });
     } else {
       ordered = vetor.sort((a, b) => {
@@ -52,8 +56,8 @@ const MateriaPage = (props) => {
         atividades={vetor}
         onChangePage={props.onChangePage}
         onSelectAtividade={props.onSelectAtividade}
+        onDelete={props.onDelete}
       />
-
       <View style={styles.switch}>
         <Text>Ordenar por Data</Text>
 

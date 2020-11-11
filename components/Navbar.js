@@ -10,7 +10,7 @@ const Navbar = ({ estado }) => {
     }
     // LOGGERS //
     // SHARK... POG... (musica) //
-    return white;
+    return "#fff";
   };
   return (
     <View style={styles.navbar}>

@@ -6,6 +6,7 @@ import {
   Text,
   View,
   Alert,
+  AsyncStorage,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
@@ -17,49 +18,85 @@ import Navbar from "./components/Navbar";
 import MateriaPage from "./components/MateriaPage";
 import AtividadePage from "./components/AtividadePage";
 import NewAtividade from "./components/NewAtividade";
-import MainAtividades from './components/MainAtividades';
+import MainAtividades from "./components/MainAtividades";
 
 export default function App() {
-  const [materias, setMaterias] = useState([
-    { id: "t1", nome: "Matéria 1" },
-    { id: "t2", nome: "Matéria 2" },
-    { id: "t3", nome: "Matéria 3" },
-  ]);
-
-  const [atividades, setAtividades] = useState([
-    {
-      id: "at1",
-      nome: "Atividade da Matéria 1",
-      idMateria: "t1",
-      valor: "10",
-      desc: "Descricao da Atividade kkkkkkkkk :D LOL!! XD :)",
-    },
-    {
-      id: "at2",
-      nome: "Atividade da Matéria 2",
-      idMateria: "t2",
-      valor: "10",
-      desc: "Descricao da Atividade kkkkkkkkk :D LOL!! XD :)",
-    },
-    {
-      id: "at3",
-      nome: "Atividade da Matéria 3",
-      idMateria: "t3",
-      valor: "10",
-      desc: "Descricao da Atividade kkkkkkkkk :D LOL!! XD :)",
-    },
-    {
-      id: "at4",
-      nome: "Atividade 2 da Matéria 3",
-      idMateria: "t3",
-      valor: "15",
-      desc: "Descricao da Atividade kkkkkkkkk :D LOL!! XD :)",
-    },
-  ]);
-
+  const [materias, setMaterias] = useState([]);
+  const [atividades, setAtividades] = useState([]);
   const [tela, setTela] = useState("materias");
   const [materiaAtual, setMateriaAtual] = useState("");
   const [atividadeAtual, setAtividadeAtual] = useState("");
+
+  const carregarAtividades = async () => {
+    try {
+      const a = await AsyncStorage.getItem("atividades");
+      console.log(`[DEBUG][34]: App -> carregarAtividades -> a`, a);
+      console.log(
+        `[DEBUG][36]: App -> carregarAtividades -> atividades`,
+        atividades
+      );
+      if (a) {
+        setAtividades(JSON.parse(a));
+      }
+      console.log(`[DEBUG][42]: App -> carregarAtividades -> a`, a);
+      console.log(
+        `[DEBUG][44]: App -> carregarAtividades -> atividades`,
+        atividades
+      );
+    } catch (error) {
+      Alert.alert("Erro ao carregar as atividades!");
+      console.error("Error on carregarAtividades()", error);
+    }
+    console.log(atividades, materias);
+  };
+
+  const carregarMaterias = async () => {
+    try {
+      const m = await AsyncStorage.getItem("materias");
+      console.log(`[DEBUG][57]: App -> carregarMaterias -> m`, m);
+      console.log(`[DEBUG][58]: App -> carregarMaterias -> materias`, materias);
+      if (m) {
+        setMaterias(JSON.parse(m));
+      }
+      console.log(`[DEBUG][62]: App -> carregarMaterias -> m`, m);
+      console.log(`[DEBUG][61]: App -> carregarMaterias -> materias`, materias);
+    } catch (error) {
+      Alert.alert("Erro ao carregar as materias!");
+      console.error("Error on carregarMaterias()", error);
+    }
+    console.log(atividades, materias);
+  };
+
+  const salvarMaterias = async () => {
+    try {
+      await AsyncStorage.setItem("materias", JSON.stringify(materias));
+    } catch (error) {
+      Alert.alert("Erro ao salvar os materias!");
+      console.error("Error on salvarMaterias()", error);
+    }
+  };
+
+  const salvarAtividades = async () => {
+    try {
+      await AsyncStorage.setItem("atividades", JSON.stringify(atividades));
+    } catch (error) {
+      Alert.alert("Erro ao salvar as atividades!");
+      console.error("Error on salvarAtividades()", error);
+    }
+  };
+
+  useEffect(() => {
+    carregarMaterias();
+    carregarAtividades();
+  }, []);
+
+  useEffect(() => {
+    salvarAtividades();
+  }, [atividades]);
+
+  useEffect(() => {
+    salvarMaterias();
+  }, [materias]);
 
   const selectMateria = (idMateria) => {
     let idm = materias.findIndex((materia) => materia.id == idMateria);
@@ -98,6 +135,46 @@ export default function App() {
     setTela("atvMaterias");
   };
 
+  const deletarAtividade = (id) => {
+    Alert.alert("Deletar Atividade?", "isso vai deletar sua atividade...", [
+      {
+        text: "Cancelar",
+        onPress: () => console.log("Cancel Pressed"),
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          const newAtividades = atividades.filter((a) => a.id !== id);
+          setAtividades(newAtividades);
+          setTela("materias"); // GAMBS XD
+          setTela("atvMaterias");
+        },
+      },
+    ]);
+  };
+
+  const deletarMateria = (id) => {
+    Alert.alert(
+      "Deletar Matéria?",
+      "isso vai deletar todas as atividades dessa matéria...",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            const newAtividades = atividades.filter((a) => a.idMateria !== id);
+            setAtividades(newAtividades);
+            const newMaterias = materias.filter((m) => m.id !== id);
+            setMaterias(newMaterias);
+          },
+        },
+      ]
+    );
+  };
+
   const switchTela = () => {
     switch (tela) {
       case "materias":
@@ -106,6 +183,7 @@ export default function App() {
             materias={materias}
             onSelect={selectMateria}
             onAddMateria={adicionarMateria}
+            onDelete={deletarMateria}
           />
         );
       case "atvMaterias":
@@ -116,6 +194,7 @@ export default function App() {
             onSelectAtividade={selectAtividade}
             onRetorno={retorna}
             onChangePage={setTela}
+            onDelete={deletarAtividade}
           />
         );
       case "addAtiv":
@@ -138,12 +217,12 @@ export default function App() {
       case "atividades":
         return (
           <MainAtividades
-          atividades={atividades}
-          materias={materias}
-          onRetorno={retorna}
-          onChangePage={setTela}
+            atividades={atividades}
+            materias={materias}
+            onRetorno={retorna}
+            onChangePage={setTela}
           />
-        )
+        );
     }
   };
 
@@ -154,8 +233,8 @@ export default function App() {
     >
       <StatusBar style="light" />
       <View style={styles.container}>
-        <Navbar estado={`${atividades.length}`} />
-        <Menu switchTela={setTela}/>
+        <Navbar estado={atividades.length} />
+        <Menu switchTela={setTela} />
         {switchTela()}
       </View>
     </KeyboardAvoidingView>

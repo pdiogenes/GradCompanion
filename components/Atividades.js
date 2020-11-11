@@ -8,7 +8,11 @@ const Atividades = (props) => {
     <FlatList
       data={props.atividades}
       renderItem={({ item }) => (
-        <Atividade atividade={item} onChangePage={props.onSelectAtividade} />
+        <Atividade
+          atividade={item}
+          onChangePage={props.onSelectAtividade}
+          onDelete={props.onDelete}
+        />
       )}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={() => <View style={styles.sep} />}

@@ -7,7 +7,12 @@ const Materias = (props) => {
     <FlatList
       data={props.listaMaterias}
       renderItem={({ item }) => (
-        <Materia onSelect={props.onSelect} id={item.id} nome={item.nome} />
+        <Materia
+          onSelect={props.onSelect}
+          id={item.id}
+          nome={item.nome}
+          onDelete={props.onDelete}
+        />
       )}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={() => <View style={styles.sep} />}

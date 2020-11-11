@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Keyboard,
   Alert,
+  Image,
 } from "react-native";
 import Materias from "./Materias";
 const Main = (props) => {
@@ -15,7 +16,21 @@ const Main = (props) => {
 
   return (
     <React.Fragment>
-      <Materias onSelect={props.onSelect} listaMaterias={props.materias} />
+      {props.materias.length > 0 ? (
+        <Materias
+          onSelect={props.onSelect}
+          listaMaterias={props.materias}
+          onDelete={props.onDelete}
+        />
+      ) : (
+        <View style={styles.imageBox}>
+          <Image
+            style={styles.image}
+            source={require("./../assets/wink.png")}
+          />
+          <Text>Não há nenhuma matéria registrada!</Text>
+        </View>
+      )}
       <View style={styles.fieldBox}>
         <TextInput
           style={styles.field}
@@ -68,6 +83,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     backgroundColor: "#bbbfca",
+  },
+  image: {
+    width: 100,
+    height: 100,
+  },
+  imageBox: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    opacity: 0.2,
+    marginVertical: 10,
   },
 });
 
