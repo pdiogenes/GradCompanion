@@ -28,6 +28,7 @@ export default function App() {
   const [atividadeAtual, setAtividadeAtual] = useState("");
 
   const carregarAtividades = async () => {
+    let carregou = false;
     try {
       const a = await AsyncStorage.getItem("atividades");
       console.log(`[DEBUG][34]: App -> carregarAtividades -> a`, a);
@@ -37,6 +38,24 @@ export default function App() {
       );
       if (a) {
         setAtividades(JSON.parse(a));
+        let data = new Date();
+        data.setDate(data.getDate() + 2);
+        let c = 0;
+        JSON.parse(a).forEach((at) => {
+          let d = new Date(at.data);
+          if (
+            new Date().getTime() < d.getTime() &&
+            d.getTime() < data.getTime()
+          ) {
+            c = c + 1;
+          }
+        });
+        if (c > 0) {
+          Alert.alert(
+            `Próximas atividades`,
+            `Existem ${c} atividades a serem entregues em 2 dias!`
+          );
+        }
       }
       console.log(`[DEBUG][42]: App -> carregarAtividades -> a`, a);
       console.log(
@@ -47,6 +66,10 @@ export default function App() {
       Alert.alert("Erro ao carregar as atividades!");
       console.error("Error on carregarAtividades()", error);
     }
+
+    if (carregou) {
+    }
+
     console.log(atividades, materias);
   };
 
