@@ -51,7 +51,7 @@ Nesta aplicação, os dados do usuário que são armazenados são: as matérias 
 - A aplicação tem pelo menos duas interfaces (telas ou páginas) independentes? **Sim**
 - A aplicação armazena e usa de forma relevante dados complexos do usuário? **Sim**
 - A aplicação tem um componente com rolagem? **Sim**
-- A aplicação tem um campo de formulário que é devidamente tratado? ** Sim**
+- A aplicação tem um campo de formulário que é devidamente tratado? **Sim**
 - O código da minha aplicação possui comentários explicando cada operação? **Sim**
 - A aplicação está funcionando corretamente? **Sim**
 - A aplicação está completa? **Sim**
