@@ -11,18 +11,21 @@ import {
 
 import DatePicker from "react-native-datepicker";
 
+// Componente que representa o formulário de inserção da nova atividade.
 const NewAtividade = (props) => {
   const [nome, setNome] = useState("");
-  const [desc, setDescp] = useState(""); // DESCULPA !!
+  const [desc, setDescp] = useState("");
   const [valor, setValor] = useState("");
 
-  const criarDataInicialPoggers = () => {
+  // essa função inicializa uma data para o input do tipo data
+  const inicializaData = () => {
     let d = new Date();
     d.setDate(d.getDate() > 0 ? d.getDate() - 1 : d.getDate());
     return d;
   };
-  const [data, setData] = useState(criarDataInicialPoggers());
+  const [data, setData] = useState(inicializaData());
 
+  // Valida os dados ao criar uma atividade
   const dadosSaoValidos = () => {
     if (nome.length <= 0) {
       Alert.alert("Atividade precisa de nome!");
@@ -43,6 +46,7 @@ const NewAtividade = (props) => {
     return true;
   };
 
+  // Salva a atividade, caso os dados sejam válidos
   const tentarSalvar = () => {
     if (dadosSaoValidos()) {
       let a = {
@@ -111,9 +115,6 @@ const NewAtividade = (props) => {
           onPress={() => {
             tentarSalvar();
           }}
-          // disabled={() => {
-          //   return touched;
-          // }}
         >
           <Text>Adicionar Atividade</Text>
         </TouchableOpacity>

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import Atividade from "./Atividade";
 
+// Componente que representa a lista de atividades da Matéria selecionada.
 const Atividades = (props) => {
-  // console.log(`[DEBUG]: Atividades -> props.atividades`, props.atividades);
   return (
     <FlatList
       data={props.atividades}

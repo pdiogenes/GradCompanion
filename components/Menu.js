@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+// Componente que representa o menu abaixo da navbar que permite navegação entre as funções
+// de matérias e a lista de atividades
 const Menu = (props) => {
+  // determina a coloração dos botões no menu
   const ativa = {
     backgroundColor: "#eee",
   };

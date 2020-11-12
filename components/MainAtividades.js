@@ -11,6 +11,7 @@ import {
   Image,
 } from "react-native";
 
+// Componente onde são listadas todas as Atividades de todas as Matérias.
 const MainAtividades = (props) => {
   const ativs = props.atividades;
   ativs.sort((a, b) => {
@@ -21,26 +22,7 @@ const MainAtividades = (props) => {
   const [displayPorMateria, setDisplayPorMateria] = useState(false);
   const [vetor, setVetor] = useState(ativs);
 
-  // const ordernarAtividades = () => {
-  //   let ordered;
-  //   if (ordenacao) {
-  //     ordered = vetor.sort((a, b) => {
-  //       // let c = new Date(a.data);
-  //       // let d = new Date(b.data);
-  //       let c = a.nome;
-  //       let d = b.nome;
-  //       return c > d;
-  //     });
-  //   } else {
-  //     ordered = vetor.sort((a, b) => {
-  //       let c = a.valor;
-  //       let d = b.valor;
-  //       return c - d;
-  //     });
-  //   }
-  //   setVetor(ordered);
-  // };
-
+  // filtra o array de atividades para organizar as atividades por matéria
   const filterVector = () => {
     const aa = props.materias.map((m) => {
       return {
@@ -115,7 +97,6 @@ const MainAtividades = (props) => {
             <Switch
               onChange={() => {
                 setDisplayPorMateria(!displayPorMateria);
-                // ordernarAtividades();
               }}
               value={displayPorMateria}
             />

@@ -11,41 +11,39 @@ import {
 
 import DatePicker from "react-native-datepicker";
 
+// Componente para edição da Atividade selecionada
 const AtividadePage = (props) => {
-  // alert(JSON.stringify(props));
   console.log("props -> AtividadePage", props);
   const [nome, setNome] = useState(props.atividade.nome);
-  const [descricao, setDesc] = useState(props.atividade.desc); // DESCULPA !!
+  const [descricao, setDesc] = useState(props.atividade.desc);
   const [valor, setValor] = useState(props.atividade.valor);
   const [data, setData] = useState(new Date(props.atividade.data));
 
   const [editNome, setEditNome] = useState(false);
-  const [editDesc, setEditDesc] = useState(false); // DESCULPA !!
+  const [editDesc, setEditDesc] = useState(false);
   const [editValor, setEditValor] = useState(false);
   const [editData, setEditData] = useState(false);
 
+  // Edita o nome e desativa o campo de edição
   const editarNome = (n) => {
-    // alert(n);
     console.log(n);
     setNome(n);
     setEditNome(false);
   };
 
+  // Edita a descrição e desativa o campo de edição
   const editarDesc = (desc) => {
     setEditDesc(false);
     setDesc(desc);
   };
 
+  // Edita o valor e desativa o campo de edição
   const editarValor = (valor) => {
     setEditValor(false);
     setValor(valor);
   };
 
-  const editarData = (data) => {
-    setEditData(false);
-    setData(data);
-  };
-
+  // Verifica os dados e solta um alerta de acordo com o campo inválido.
   const dadosSaoValidos = () => {
     if (nome.length <= 0) {
       Alert.alert("Atividade precisa de nome!");
@@ -66,9 +64,9 @@ const AtividadePage = (props) => {
     return true;
   };
 
+  // Se os dados forem salvos, salva e volta para a pagina das atividades da Matéria selecionada.
   const tentarSalvar = () => {
     if (dadosSaoValidos()) {
-      // voltar passando o obj atualizado
       const a = {
         ...props.atividade,
         valor,

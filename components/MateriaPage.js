@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import Atividades from "./Atividades";
 
+// Componente cuja função é exibir a lista de atividades de uma determinada matéria
+// Permite a ordenação das atividades
 const MateriaPage = (props) => {
   const ativs = props.atividades.filter(
     (atividade) => atividade.idMateria == props.materia.id
@@ -17,6 +19,9 @@ const MateriaPage = (props) => {
 
   const [vetor, setVetor] = useState(ativs);
 
+  // função que ordena as atividades baseado no estado do Switch.
+  // true/ativado     => ordena por data de entrega;
+  // false/desativado => ordena por valor da atividade;
   const ordernarAtividades = () => {
     let ordered;
     if (ordenacao) {

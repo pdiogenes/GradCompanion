@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import Materia from "./Materia";
 
+// Componente que representa a lista de matérias.
 const Materias = (props) => {
   return (
     <FlatList

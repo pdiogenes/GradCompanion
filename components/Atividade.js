@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
+
+// Componente que cria o item "Atividade" na lista de Atividades, com funcionalidades de selecionar (onPress) e deletar (onLongPress)
 const Tarefa = (props) => {
   return (
     <View style={styles.itemBox}>

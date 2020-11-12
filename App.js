@@ -27,6 +27,7 @@ export default function App() {
   const [materiaAtual, setMateriaAtual] = useState("");
   const [atividadeAtual, setAtividadeAtual] = useState("");
 
+  // tenta carregar a lista de atividades
   const carregarAtividades = async () => {
     let carregou = false;
     try {
@@ -73,6 +74,7 @@ export default function App() {
     console.log(atividades, materias);
   };
 
+  // tenta carregar a lista de matérias
   const carregarMaterias = async () => {
     try {
       const m = await AsyncStorage.getItem("materias");
@@ -90,6 +92,7 @@ export default function App() {
     console.log(atividades, materias);
   };
 
+  // tenta salvar as matérias
   const salvarMaterias = async () => {
     try {
       await AsyncStorage.setItem("materias", JSON.stringify(materias));
@@ -99,6 +102,7 @@ export default function App() {
     }
   };
 
+  // tenta salvar as atividades
   const salvarAtividades = async () => {
     try {
       await AsyncStorage.setItem("atividades", JSON.stringify(atividades));
@@ -108,37 +112,43 @@ export default function App() {
     }
   };
 
+  // tenta carregar as matérias e atividades quando o usuário abre o aplicativo
   useEffect(() => {
     carregarMaterias();
     carregarAtividades();
   }, []);
 
+  // tenta salvar as atividades quando há uma alteração na lista de atividades
   useEffect(() => {
     salvarAtividades();
   }, [atividades]);
 
+  // tenta salvar as matérias quando há uma alteração na lista de matérias
   useEffect(() => {
     salvarMaterias();
   }, [materias]);
 
+  // seleciona a matéria para exibir a página da mesma
   const selectMateria = (idMateria) => {
     let idm = materias.findIndex((materia) => materia.id == idMateria);
     setMateriaAtual(idm);
     setTela("atvMaterias");
   };
 
+  // seleciona a atividade para exibir a página da mesma
   const selectAtividade = (idAtividade) => {
-    // alert(JSON.stringify(idAtividade));
     let ida = atividades.findIndex((atividade) => atividade.id == idAtividade);
     setAtividadeAtual(ida);
     setTela("atvDetails");
   };
 
+  // função para retornar para a página principal
   const retorna = () => {
     setMateriaAtual("");
     setTela("materias");
   };
 
+  // adiciona uma matéria
   const adicionarMateria = (m) => {
     if (m.length > 0) {
       const nova = { id: Date.now().toString(), nome: m };
@@ -146,11 +156,12 @@ export default function App() {
     } else Alert.alert("Você deve digitar o nome da matéria.");
   };
 
+  // adiciona uma atividade
   const adicionarAtividade = (a) => {
-    // adicionar checagem de campos
     setAtividades([...atividades, a]);
   };
 
+  // Função para atualizar a atividade dentro da lista de atividades.
   const atualizaAtividade = (a) => {
     let lista = [...atividades];
     lista[atividadeAtual] = a;
@@ -158,6 +169,7 @@ export default function App() {
     setTela("atvMaterias");
   };
 
+  // Função para deletar a atividade.
   const deletarAtividade = (id) => {
     Alert.alert("Deletar Atividade?", "isso vai deletar sua atividade...", [
       {
@@ -176,6 +188,7 @@ export default function App() {
     ]);
   };
 
+  // Função para deletar uma matéria e todas as atividades relacionadas a ela.
   const deletarMateria = (id) => {
     Alert.alert(
       "Deletar Matéria?",
@@ -198,6 +211,7 @@ export default function App() {
     );
   };
 
+  // Função para fazer a troca de páginas.
   const switchTela = () => {
     switch (tela) {
       case "materias":

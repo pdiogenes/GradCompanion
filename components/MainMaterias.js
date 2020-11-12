@@ -10,6 +10,9 @@ import {
   Image,
 } from "react-native";
 import Materias from "./Materias";
+
+// Componente cuja função é exibir a lista de matérias registradas
+// e permitir a inserção de novas matérias
 const Main = (props) => {
   const [field, setField] = useState("");
   let _input;

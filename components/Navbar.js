@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
+
+// Componente que representa a barra de navegação
+// que inclui o nome da aplicação e quantas atividades o usuário tem registradas
 const Navbar = ({ estado }) => {
+  // Colore o número de atividades dependendo de quantas
   const getColor = (estado) => {
     if (estado > 4) {
       return "red";
@@ -8,8 +12,6 @@ const Navbar = ({ estado }) => {
     if (estado > 2) {
       return "yellow";
     }
-    // LOGGERS //
-    // SHARK... POG... (musica) //
     return "#fff";
   };
   return (
